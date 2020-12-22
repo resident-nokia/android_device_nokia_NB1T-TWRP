@@ -30,6 +30,7 @@
 #device         mount point      fstype        [device2] [length=]
 
 /dev/block/bootdevice/by-name/system       /               ext4    ro,barrier=1                                                    wait,slotselect,verify
+/dev/block/bootdevice/by-name/vendor       /vendor         ext4    ro,barrier=1                                                        wait,slotselect,verify
 /dev/block/bootdevice/by-name/userdata     /data           ext4    nosuid,nodev,barrier=1,noauto_da_alloc,discard,errors=panic   wait,check,latemount,formattable,fileencryption=ice
 /dev/block/mmcblk0p1                       /sdcard         vfat    nosuid,nodev                                                    wait
 /dev/block/bootdevice/by-name/boot         /boot           emmc    defaults                                                        wait,slotselect
@@ -67,3 +68,7 @@
 
 #LUN5
 /dev/block/bootdevice/by-name/nvdef          /nvdef          emmc   defaults                                         wait,slotselect
+
+# Raw partition images
+/dev/block/bootdevice/by-name/system         /system_image   emmc   ro,barrier=1,discard                             wait,slotselect,verify
+/dev/block/bootdevice/by-name/vendor         /vendor_image   emmc   ro,barrier=1                                     wait,slotselect,verify

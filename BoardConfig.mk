@@ -23,7 +23,7 @@
 # *not* include it on all devices, so it is safe even with hardware-specific
 # components.
 
-LOCAL_PATH := device/nokia/NB1
+LOCAL_PATH := device/nokia/$(LOCAL_DEVICE)
 
 # Architecture
 TARGET_ARCH := arm64
@@ -66,7 +66,7 @@ BOARD_KERNEL_PAGESIZE    := 4096
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET     := 0x01000000
 BOARD_SECOND_OFFSET      := 0x00f00000
-TARGET_PREBUILT_KERNEL   := $(LOCAL_PATH)/prebuilt/Image.gz-dtb
+TARGET_PREBUILT_KERNEL   := $(LOCAL_PATH)/prebuilt/Image.$(LOCAL_DEVICE).gz-dtb
 TARGET_RECOVERY_FSTAB 	 := $(LOCAL_PATH)/recovery/root/etc/recovery.fstab
 
 # Partitions
@@ -100,7 +100,6 @@ TARGET_RECOVERY_QCOM_RTC_FIX := true
 BOARD_HAS_NO_REAL_SDCARD := true
 BOARD_SUPPRESS_SECURE_ERASE := true
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
-TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd
 TW_INCLUDE_FB2PNG := true
 TW_DEFAULT_BRIGHTNESS := 80
 TW_DEFAULT_LANGUAGE := en
@@ -125,4 +124,5 @@ TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 
 # Workaround for error copying vendor files to recovery ramdisk
-TARGET_COPY_OUT_VENDOR := system/vendor
+BOARD_VENDORIMAGE_PARTITION_TYPE := ext4
+TARGET_COPY_OUT_VENDOR := vendor
