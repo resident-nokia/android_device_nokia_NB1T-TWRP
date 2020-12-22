@@ -1,4 +1,4 @@
-# Device Tree for Nokia 8
+# Device Tree for Nokia 8 / Sirocco
 
 The Nokia 8 is a high-end Nokia-branded smartphone running the Android operating system
 Announced on 16 August 2017 in London, England by HMD Global,[4][5] the phone began sales in Europe in September 2017.
@@ -30,8 +30,14 @@ Then add these string to .repo/manifests/remove.xml
 
 Then add these projects to .repo/local_manifests/roomservice.xml (If you don't have it, you can add them to .repo/manifest.xml): 
 
+For NB1 treble:
 ```xml
-<project name="GPUCode/android_device_nokia_nb1-TWRP" path="device/nokia/NB1" remote="github" revision="android-9.0" />
+<project name="GPUCode/android_device_nokia_A1N-TWRP" path="device/nokia/A1N" remote="github" revision="android-9.0" />
+```
+
+For A1N:
+```xml
+<project name="GPUCode/android_device_nokia_A1N-TWRP" path="device/nokia/A1N" remote="github" revision="android-9.0" />
 ```
 
 Now you can sync your source:
@@ -46,14 +52,14 @@ Finally execute these:
 source build/envsetup.sh
 export ALLOW_MISSING_DEPENDENCIES=true
 export LC_ALL=C
-lunch omni_NB1-eng
+lunch omni_<device>-eng
 mka -j$(nproc --all) recoveryimage 
 ```
 
 To test it:
 
 ```
-fastboot flash:raw boot out/target/product/NB1/recovery.img
+fastboot flash:raw boot out/target/product/<device>/recovery.img
 ```
 
 Kernel Source: https://github.com/resident-nokia/umbrella
