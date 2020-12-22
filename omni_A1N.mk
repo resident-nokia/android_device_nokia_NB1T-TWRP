@@ -14,12 +14,12 @@
 # limitations under the License.
 #
 
-LOCAL_DEVICE := NB1
+LOCAL_DEVICE := A1N
 
 # Inherit from the generic msm8998 configuration
 $(call inherit-product, device/nokia/$(LOCAL_DEVICE)/common.mk)
 
 # Product configs
-PRODUCT_DEVICE := NB1
-PRODUCT_NAME := omni_NB1
-PRODUCT_MODEL := Nokia 8
+PRODUCT_DEVICE := A1N
+PRODUCT_NAME := omni_A1N
+PRODUCT_MODEL := Nokia 8 Sirocco
