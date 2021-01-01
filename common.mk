@@ -68,6 +68,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 TARGET_RECOVERY_WIPE := \
     $(LOCAL_PATH)/recovery/root/etc/recovery.wipe	
 
+# Timezone Data
+PRODUCT_PACKAGES += \
+    tzdata_twrp
+
 # Common product configs
 PRODUCT_BRAND := Nokia
 PRODUCT_MANUFACTURER := HMD Global
