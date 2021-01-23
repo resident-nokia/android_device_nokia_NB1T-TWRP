@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2012, 2014-2015, 2016-2018 The Linux Foundation. All rights reserved.
+# Copyright (c) 2009-2012, 2014-2015, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -27,51 +27,30 @@
 
 on early-init
     mkdir /firmware 0771 system system
-    mount debugfs debugfs /sys/kernel/debug
-    chmod 0755 /sys/kernel/debug
 
 on fs
-    wait /dev/block/platform/soc/${ro.boot.bootdevice}
-    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-
+    wait /dev/block/platform/soc/1da4000.ufshc
+    symlink /dev/block/platform/soc/1da4000.ufshc /dev/block/bootdevice
     chmod 0660 /dev/qseecom
     chown system drmrpc /dev/qseecom
     chmod 0664 /dev/ion
     chown system system /dev/ion
-
-    # IMPORTANT!
-    # This needs to be supported by the init binary!
+    export LD_LIBRARY_PATH /sbin:/vendor/lib64:/vendor/lib64/hw
     install_keyring
 
-on init
-    # Mount cgroup for cpu accounting
-    mount cgroup none /acct cpuacct
-    mkdir /acct/uid
+service patchlevel /sbin/patchlevel.sh
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
 
-    export LD_CONFIG_FILE /etc/ld.config.txt
-
-    start hwservicemanager
-    start patchlevel
-
-on boot
-    setprop sys.usb.config adb
-    wait /sbin/patchlevel_set
-
-on property:crypto.ready=1
-    start sbin_qseecomd
-    start servicemanager
-
-    # Wait for qseecomd to finish
-    wait_for_prop sys.listeners.registered true
-
-    start gatekeeper-1-0
-    start keymaster-3-0
-
-on property:crypto.ready=0
-    stop keymaster-3-0
-    stop gatekeeper-1-0
-    stop servicemanager
-    stop sbin_qseecomd
+# Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
+service sbinqseecomd /sbin/qseecomd
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
 
 service hwservicemanager /sbin/hwservicemanager
     user root
@@ -81,50 +60,63 @@ service hwservicemanager /sbin/hwservicemanager
     seclabel u:r:recovery:s0
 
 service servicemanager /sbin/servicemanager
-    disabled
     user root
     group root readproc
-    seclabel u:r:recovery:s0
-    writepid /dev/cpuset/system-background/tasks
-
-service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service-qti
-    user root
-    group root
     disabled
     seclabel u:r:recovery:s0
 
-service gatekeeper-1-0 /sbin/android.hardware.gatekeeper@1.0-service-qti
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service sbin_qseecomd /sbin/qseecomd
-    disabled
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
-# Handled by TWRP
-service keystore /sbin/keystore /tmp/misc/keystore
-    disabled
-    oneshot
-    user root
-    group root drmrpc readproc
-    seclabel u:r:recovery:s0
-    writepid /dev/cpuset/foreground/tasks
-
-# Handled by TWRP
 service keystore_auth /sbin/keystore_auth
-    disabled
     oneshot
     user system
     group root
+    disabled
     seclabel u:r:recovery:s0
 
-service patchlevel /sbin/patchlevel.sh
+service keystore /sbin/keystore /data/misc/keystore
+    user root
+    group root drmrpc readproc
+    disabled
+    seclabel u:r:recovery:s0
+
+service boot-1-0 /sbin/android.hardware.boot@1.0-service
     user root
     group root
     disabled
-    oneshot
     seclabel u:r:recovery:s0
+
+service gatekeeper-1-0 /sbin/android.hardware.gatekeeper@1.0-service
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service keymaster-3-0 /sbin/android.hardware.keymaster@3.0-service
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+on boot
+    # Workaround for adb not coming up
+    setprop sys.usb.config mtp,adb
+    setprop sys.usb.config adb
+    
+    # Enable OTG
+    write /sys/devices/soc/800f000.qcom,spmi/spmi-0/spmi0-02/800f000.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/usb/otg_switch 1
+    start patchlevel
+
+on property:crypto.ready=0
+    stop sbinqseecomd
+    stop keymaster-3-0
+    stop gatekeeper-1-0
+    stop hwservicemanager
+    stop keystore
+    stop servicemanager
+
+on property:crypto.ready=1
+    start sbinqseecomd
+    start hwservicemanager
+    start boot-1-0
+    start keymaster-3-0
+    start gatekeeper-1-0
+    start servicemanager

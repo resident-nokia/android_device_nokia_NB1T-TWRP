@@ -81,10 +81,9 @@ extern "C" {
 #define PTN_XBL                         "xbl"
 #define PTN_XBL_CFG                     "xbl_config"
 #define PTN_SWAP_LIST                   PTN_XBL, \
-        "abl", "aboot", "aes", "apdp", "bootlocker", "cmnlib", "cmnlib32", \
-        "cmnlib64", "devcfg", "dtbo", "hosd", "hyp", "laf", "keymaster", \
-        "lockbooter", "msadp", "pmic", "rpm", "storsec", \
-        "trusty", "tz", "vbmeta"
+        "abl", "aboot", "apdp", "cmnlib", "cmnlib64", "devcfg", \
+        "dtbo", "hyp", "keymaster", "msadp", "pmic", "rpm", "storsec", \
+        "tz"
 #define AB_PTN_LIST PTN_SWAP_LIST, "boot", "system", "vendor", "modem"
 #define BOOT_DEV_DIR    "/dev/block/bootdevice/by-name"
 

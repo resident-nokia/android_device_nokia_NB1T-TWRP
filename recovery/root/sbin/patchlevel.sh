@@ -50,7 +50,7 @@ relink() {
 finish() {
     umount "$TEMPSYS"
     rmdir "$TEMPSYS"
-    touch /sbin/patchlevel_set
+    setprop crypto.ready 1
     log_info "Script complete. Device ready for decryption."
     exit 0
 }

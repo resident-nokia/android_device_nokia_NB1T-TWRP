@@ -23,7 +23,7 @@
 # *not* include it on all devices, so it is safe even with hardware-specific
 # components.
 
-LOCAL_PATH := device/nokia/$(LOCAL_DEVICE)
+LOCAL_PATH := device/nokia/NB1
 
 # Architecture
 TARGET_ARCH := arm64
@@ -85,7 +85,7 @@ RECOVERY_SDCARD_ON_DATA := true
 RECOVERY_NEED_SELINUX_FIX := true
 USE_RECOVERY_INSTALLER := true
 RECOVERY_INSTALLER_PATH := $(LOCAL_PATH)/installer
-TARGET_RECOVERY_PIXEL_FORMAT := RGBA_8888
+TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
@@ -100,6 +100,7 @@ TARGET_RECOVERY_QCOM_RTC_FIX := true
 BOARD_HAS_NO_REAL_SDCARD := true
 BOARD_SUPPRESS_SECURE_ERASE := true
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
+TW_CRYPTO_USE_SYSTEM_VOLD := qseecomd
 TW_INCLUDE_FB2PNG := true
 TW_DEFAULT_BRIGHTNESS := 80
 TW_DEFAULT_LANGUAGE := en
