@@ -17,8 +17,12 @@
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
 
-# Build configuration for a very minimal build
-$(call inherit-product, build/target/product/embedded.mk)
+# Inherit from the common Open Source product configuration
+$(call inherit-product, $(SRC_TARGET_DIR)/product/embedded.mk)
+
+# define hardware platform
+PRODUCT_PLATFORM := msm8998
+TARGET_USES_HARDWARE_QCOM_BOOTCTRL := true
 
 # A/B updater
 AB_OTA_UPDATER := true
@@ -37,22 +41,19 @@ AB_OTA_POSTINSTALL_CONFIG += \
 PRODUCT_PACKAGES += \
     otapreopt_script \
     update_engine \
-    update_engine_sideload \
     update_verifier
+
+PRODUCT_PACKAGES += \
+    bootctrl.$(PRODUCT_PLATFORM) \
+    update_engine_sideload
 
 # The following modules are included in debuggable builds only.
 PRODUCT_PACKAGES_DEBUG += \
     bootctl \
     update_engine_client
 
-# Boot control HAL
-PRODUCT_PACKAGES += \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service \
-    bootctrl.msm8998
-
 PRODUCT_STATIC_BOOT_CONTROL_HAL := \
-    bootctrl.msm8998 \
+    bootctrl.$(PRODUCT_PLATFORM) \
     libcutils \
     libgptutils \
     libz
@@ -62,12 +63,17 @@ PRODUCT_PACKAGES += \
     qcom_decrypt \
     qcom_decrypt_fbe
 
+# Boot control HAL
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.0-impl \
+    android.hardware.boot@1.0-service \
+
 # Properties for decryption
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.keystore=msm8998 \
     ro.hardware.gatekeeper=msm8998 \
     ro.hardware.bootctrl=msm8998 \
-    ro.build.system_root_image=true
+    ro.vendor.build.security_patch=2099-12-31
 
 # Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := \
