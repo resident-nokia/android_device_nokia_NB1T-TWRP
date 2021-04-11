@@ -30,6 +30,7 @@
 /data            ext4              /dev/block/bootdevice/by-name/userdata   flags=encryptable=footer;backup=1;display="Data";
 /vendor          ext4              /dev/block/bootdevice/by-name/vendor     flags=slotselect;display="Vendor";backup=1;wipeingui
 /vendor_image    emmc              /dev/block/bootdevice/by-name/vendor     flags=slotselect
+/misc		         emmc	             /dev/block/bootdevice/by-name/misc
 
 # Removable storage
 /external_sd     auto              /dev/block/mmcblk0p1                     flags=removable;storage;wipeingui;andsec;display="Micro SD card"
