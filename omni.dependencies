@@ -12,7 +12,7 @@
     "revision":    "android-9.0"
   },
   {
-    "remote":      "TeamWin",
+    "remote":      "GPUCode",
     "repository":  "android_device_qcom_twrp-common",
     "target_path": "device/qcom/twrp-common",
     "revision":    "android-9.0"
