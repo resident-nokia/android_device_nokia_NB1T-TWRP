@@ -1,11 +1,5 @@
 [
   {
-    "remote":      "TeamWin",
-    "repository":  "android_hardware_qcom_bootctrl",
-    "target_path": "hardware/qcom/bootctrl",
-    "revision":    "android-9.0"
-  },
-  {
     "remote":      "GPUCode",
     "repository":  "android_device_qcom_twrp-common",
     "target_path": "device/qcom/twrp-common",
