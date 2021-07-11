@@ -14,10 +14,5 @@
 # limitations under the License.
 #
 
-ifeq ($(LOCAL_DIR), device/nokia/NB1)
 PRODUCT_MAKEFILES := $(LOCAL_DIR)/omni_NB1.mk
 COMMON_LUNCH_CHOICES := omni_NB1-eng
-else
-PRODUCT_MAKEFILES := $(LOCAL_DIR)/omni_A1N.mk
-COMMON_LUNCH_CHOICES := omni_A1N-eng
-endif
