@@ -49,7 +49,6 @@ TARGET_NO_BOOTLOADER := true
 
 # Common
 USE_COMMON_BOOTCTRL := true
-USE_COMMON_GPTUTILS := true
 
 # Crypto
 TW_INCLUDE_CRYPTO := true
