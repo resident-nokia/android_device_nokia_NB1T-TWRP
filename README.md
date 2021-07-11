@@ -1,4 +1,4 @@
-# Device Tree for Nokia 8 / Sirocco
+# Device Tree for Nokia 8 treble
 
 The Nokia 8 is a high-end Nokia-branded smartphone running the Android operating system
 Announced on 16 August 2017 in London, England by HMD Global,[4][5] the phone began sales in Europe in September 2017.
@@ -20,49 +20,39 @@ Announced on 16 August 2017 in London, England by HMD Global,[4][5] the phone be
 
 ## Compile
 
-First download omni-9.0 tree:
+First download omni-9.0 tree and sync the sources:
 
 ```
 repo init --depth=1 -u git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-9.0
-```
-Then add these string to .repo/manifests/remove.xml
-
-
-Then add these projects to .repo/local_manifests/roomservice.xml (If you don't have it, you can add them to .repo/manifest.xml): 
-
-For NB1 treble:
-```xml
-<project name="GPUCode/android_device_nokia_A1N-TWRP" path="device/nokia/A1N" remote="github" revision="android-9.0" />
-```
-
-For A1N:
-```xml
-<project name="GPUCode/android_device_nokia_A1N-TWRP" path="device/nokia/A1N" remote="github" revision="android-9.0" />
-```
-
-Now you can sync your source:
-
-```
 repo sync -c --no-tags --no-clone-bundle -j$(nproc --all)
 ```
 
-Finally execute these:
+Then clone the device tree and it's dependencies:
+
+```
+git clone https://github.com/resident-nokia/android_device_nokia_NB1T-TWRP device/nokia/NB1
+git clone -b android-9.0 https://github.com/TeamWin/android_device_qcom_twrp-common device/qcom/twrp-common
+```
+
+Finally build the recovery image:
 
 ```
 source build/envsetup.sh
 export ALLOW_MISSING_DEPENDENCIES=true
 export LC_ALL=C
-lunch omni_<device>-eng
+lunch omni_NB1-eng
 mka -j$(nproc --all) recoveryimage 
 ```
 
 To test it:
 
 ```
-fastboot flash:raw boot out/target/product/<device>/recovery.img
+fastboot flash:raw boot $OUT/recovery.img
 ```
 
-Kernel Source: https://github.com/resident-nokia/umbrella
+Profit?
+
+Kernel Source: https://github.com/GPUCode/android_kernel_nokia_msm8998
 
 ## Credits
  * TeamWin Team
